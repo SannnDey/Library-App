@@ -1,4 +1,5 @@
 package model;
+
 public class Buku {
     private int id;
     private String judul;

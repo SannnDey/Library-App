@@ -1,17 +1,15 @@
 import java.util.Scanner;
-
 import model.Buku;
 import model.Pengguna;
-import model.Pustaka;
 
 public class Main {
     public static void main(String[] args) {
         @SuppressWarnings("resource")
         Scanner scanner = new Scanner(System.in);
-        Pustaka pustaka = new Pustaka();
 
-        pustaka.tambahBuku(new Buku(1, "Belajar Java", "John Doe"));
-        pustaka.tambahBuku(new Buku(2, "Pemrograman Berorientasi Objek", "Jane Doe"));
+        Pengguna admin = new Pengguna("Admin", true);
+        admin.tambahBuku(new Buku(1, "Belajar Java", "SannnDey"));
+        admin.tambahBuku(new Buku(2, "Pemrograman Berorientasi Objek", "SannnDey"));
 
         while (true) {
             System.out.print("Masukkan nama Anda: ");
@@ -20,8 +18,7 @@ public class Main {
             System.out.print("Apakah Anda admin? (ya/tidak): ");
             boolean isAdmin = scanner.nextLine().equalsIgnoreCase("ya");
 
-            Pengguna pengguna = new Pengguna(nama, isAdmin);
-
+            Pengguna pengguna = isAdmin ? admin : new Pengguna(nama, false);
 
             boolean kembaliKeMenuAwal = false;
             while (true) {
@@ -40,50 +37,51 @@ public class Main {
 
                 System.out.print("Pilih opsi: ");
                 int opsi = scanner.nextInt();
-                scanner.nextLine(); 
+                scanner.nextLine();
                 switch (opsi) {
                     case 1:
                         if (pengguna.isAdmin()) {
                             System.out.print("Masukkan ID Buku: ");
                             int id = scanner.nextInt();
-                            scanner.nextLine();  
+                            scanner.nextLine();
                             System.out.print("Masukkan Judul Buku: ");
                             String judul = scanner.nextLine();
                             System.out.print("Masukkan Pengarang: ");
                             String pengarang = scanner.nextLine();
                             Buku buku = new Buku(id, judul, pengarang);
-                            pustaka.tambahBuku(buku);
+                            pengguna.tambahBuku(buku);
                         } else {
                             System.out.print("Masukkan ID Buku yang ingin dipinjam: ");
                             int id = scanner.nextInt();
-                            pustaka.pinjamBuku(id, pengguna);
+                            pengguna.pinjamBuku(id);
                         }
                         break;
                     case 2:
                         if (pengguna.isAdmin()) {
                             System.out.print("Masukkan ID Buku yang ingin dihapus: ");
                             int id = scanner.nextInt();
-                            pustaka.hapusBuku(id);
+                            pengguna.hapusBuku(id);
                         } else {
                             System.out.print("Masukkan ID Buku yang ingin dikembalikan: ");
                             int id = scanner.nextInt();
-                            pustaka.kembalikanBuku(id, pengguna);
+                            pengguna.kembalikanBuku(id);
                         }
                         break;
                     case 3:
-                        pustaka.daftarBuku();
+                        pengguna.daftarBuku();
                         break;
                     case 4:
-                        System.out.print("Apakah Anda ingin kembali ke menu awal atau keluar sepenuhnya? (kembali/keluar): ");
+                        System.out.print(
+                                "Apakah Anda ingin kembali ke menu awal atau keluar sepenuhnya? (kembali/keluar): ");
                         String pilihan = scanner.nextLine();
                         if (pilihan.equalsIgnoreCase("keluar")) {
                             System.out.println("Terima kasih telah menggunakan aplikasi pustaka.");
                             scanner.close();
-                            return; 
+                            return;
                         } else if (pilihan.equalsIgnoreCase("kembali")) {
                             System.out.println("Kembali ke menu awal...");
                             kembaliKeMenuAwal = true;
-                            break; 
+                            break;
                         } else {
                             System.out.println("Opsi tidak valid. Kembali ke menu.");
                         }
